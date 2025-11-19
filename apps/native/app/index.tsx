@@ -7,10 +7,6 @@ export default function InitialRoute() {
   const router = useRouter();
 
   useEffect(() => {
-    if (__DEV__) {
-      return;
-    }
-
     const verifyAppLaunchStatus = async () => {
       const hasCompletedOnboarding = await AsyncStorage.getItem("hasLaunched");
       const isAuthenticated = await AsyncStorage.getItem("isAuth");
@@ -26,10 +22,6 @@ export default function InitialRoute() {
 
     verifyAppLaunchStatus();
   }, [router]);
-
-  if (__DEV__) {
-    return <Redirect href="/(tabs)/wallet" />;
-  }
 
   return shouldShowOnboarding ? <Redirect href="/onboarding" /> : null;
 }
