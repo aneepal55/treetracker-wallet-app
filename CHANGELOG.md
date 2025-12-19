@@ -1,3 +1,11 @@
+# [1.2.0](https://github.com/aneepal55/treetracker-wallet-app/compare/v1.1.0...v1.2.0) (2025-12-19)
+
+
+### Features
+
+* **bdd:** unify native and web testing with modular wdio ([f8bbb20](https://github.com/aneepal55/treetracker-wallet-app/commit/f8bbb203c4e0e253be49f7455821f3b92f7644c4))
+* **web:** add filter icon to wallet header ([b77fac0](https://github.com/aneepal55/treetracker-wallet-app/commit/b77fac01185c073d6a2981995ae406b0c85623c3))
+
 # [1.1.0](https://github.com/aneepal55/treetracker-wallet-app/compare/v1.0.0...v1.1.0) (2025-12-09)
 
 
