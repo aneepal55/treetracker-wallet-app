@@ -1,7 +1,7 @@
-# This workflow triggers on pull requests that modify non-Markdown files in the User module (apps/user/**).
-# It runs e2e, integration and unit tests to validate those changes.
+# This workflow triggers on pull requests that modify files (other than *.md) in the wallet package (i.e., packages/wallet/**)
+# It runs e2e tests to validate changes.
 
-name: PR CI for User module
+name: PR CI for Wallet Package
 
 on:
   pull_request_target:
@@ -10,24 +10,23 @@ on:
       - synchronize
       - reopened
       - edited
+    paths:
+      - "packages/wallet/**"
+      - "!**/*.md"
   workflow_dispatch:
 
 jobs:
-  unit-integration-e2e-tests:
+  e2e-tests:
     runs-on: ubuntu-latest
     env:
-      NODE_TLS_REJECT_UNAUTHORIZED: 0
       PRIVATE_KEYCLOAK_REALM: ${{ secrets.PRIVATE_KEYCLOAK_REALM }}
       PRIVATE_KEYCLOAK_BASE_URL: ${{ secrets.PRIVATE_KEYCLOAK_BASE_URL }}
       PRIVATE_KEYCLOAK_CLIENT_SECRET: ${{ secrets.PRIVATE_KEYCLOAK_CLIENT_SECRET }}
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
       PRIVATE_KEYCLOAK_CLIENT_ID: ${{ secrets.PRIVATE_KEYCLOAK_CLIENT_ID }}
-      PRIVATE_WALLET_API_KEY: ${{ secrets.PRIVATE_WALLET_API_KEY }}
-      CORS_ORIGINS_DEV: ${{ vars.CORS_ORIGINS_DEV }}
+      NEXT_PUBLIC_TREETRACKER_API: ${{ secrets.NEXT_PUBLIC_TREETRACKER_API }}
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           repository: ${{ github.event.pull_request.head.repo.full_name }}
@@ -43,11 +42,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --immutable
 
-      - name: Run Unit Tests
-        run: yarn user:test:unit
-
-      - name: Run Integration Tests
-        run: yarn user:test:int
-
-      - name: Run User Service E2E Tests
-        run: yarn user:test:e2e --forceExit
+      - name: Run e2e test for wallet package
+        run: |
+          yarn workspace @treetracker/wallet test
